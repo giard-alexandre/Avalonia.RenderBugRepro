@@ -1,0 +1,37 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RenderBugRepro.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tdg="using:Avalonia.Controls"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="600"
+        x:Class="RenderBugRepro.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Person Data Grid - DynamicData Sample">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Total People: " VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding People.Count}" VerticalAlignment="Center" FontWeight="Bold"/>
+        </StackPanel>
+        
+        <tdg:TreeDataGrid Grid.Row="1" 
+                          Source="{Binding TreeDataGridSource}"
+                          Margin="10"
+                          CanUserResizeColumns="True"
+                          CanUserSortColumns="True"/>
+    </Grid>
+
+</Window>
