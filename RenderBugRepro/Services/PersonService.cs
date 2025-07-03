@@ -75,7 +75,7 @@ public class PersonService : IDisposable
             .RuleFor(p => p.JobTitle, f => f.Name.JobTitle())
             .RuleFor(p => p.Salary, f => f.Random.Decimal(30000, 150000));
 
-        var people = initialFaker.Generate(1000);
+        var people = initialFaker.Generate(5000);
         _personCache.AddOrUpdate(people);
     }
 
@@ -97,7 +97,7 @@ public class PersonService : IDisposable
             if (!currentItems.Any()) return;
 
             // Randomly select 200-500 entries to update
-            var updateCount = _random.Next(200, 501); // 200 to 500 inclusive
+            var updateCount = _random.Next(500, 701); // 200 to 500 inclusive
             var indicesToUpdate = Enumerable.Range(0, currentItems.Count)
                 .OrderBy(_ => _random.Next())
                 .Take(updateCount)
