@@ -6,6 +6,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Bogus;
 using DynamicData;
+using DynamicData.Binding;
 using ReactiveUI;
 using RenderBugRepro.Models;
 using Person = RenderBugRepro.Models.Person;
@@ -46,7 +47,8 @@ public class PersonService : IDisposable
         _personCache
             .Connect()
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Bind(out _people)
+            .SortAndBind(out _people, SortExpressionComparer<Person>.Ascending(p => p. LastName))
+            // .Bind(out _people)
             .Subscribe()
             .DisposeWith(_disposables);
 
@@ -94,8 +96,8 @@ public class PersonService : IDisposable
             var currentItems = _personCache.Items.ToList();
             if (!currentItems.Any()) return;
 
-            // Randomly select 20-30 entries to update
-            var updateCount = _random.Next(20, 31); // 20 to 30 inclusive
+            // Randomly select 200-500 entries to update
+            var updateCount = _random.Next(200, 501); // 200 to 500 inclusive
             var indicesToUpdate = Enumerable.Range(0, currentItems.Count)
                 .OrderBy(_ => _random.Next())
                 .Take(updateCount)
@@ -106,7 +108,7 @@ public class PersonService : IDisposable
             foreach (var index in indicesToUpdate)
             {
                 var existingPerson = currentItems[index];
-                
+
                 // Create an updated person with the same ID but new data
                 var updatedPerson = _faker.Generate();
                 updatedPerson.Id = existingPerson.Id; // Keep the same ID
